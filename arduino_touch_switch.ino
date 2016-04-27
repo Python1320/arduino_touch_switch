@@ -1,7 +1,6 @@
 #include <CapacitiveSensor.h>
-
 // Uncomment to enable serial debug output
-// #define DBG
+#define DBG
 
 // Around 1-20 Megaohm resistor between pins 7 and 8, pin 8 is sensor to which to connect foil
 CapacitiveSensor   cs = CapacitiveSensor(7, 8);
@@ -51,16 +50,21 @@ void loop()
 	static bool toggled = false;
 	static bool toggle = false;
 
+	//TODO: dc offset compensation
+	// thres = thres*
+	
 	// Very simple "filter"
 	a = a*q + ((float)c)*(1.0f - q);
-
 	// wait for thres to go over measured value and start counting time and toggle pin after timeout and wait for measuer to go below threshold
-	if (a>thres) {
+	if (a>thres) 
+	{
 		long now = millis();
-		if (startt == 0) {
+		if (startt == 0) 
+		{
 			startt = now;
 		}
-		else  if ((now - startt) > filter_time && !toggled) {
+		else if ((now - startt) > filter_time && !toggled) 
+		{
 			toggled = true;
 			toggle = !toggle;
 
@@ -69,7 +73,8 @@ void loop()
 		}
 
 	}
-	else  if (startt>0) {
+	else  if (startt>0)
+	{
 		startt = 0;
 		toggled = false;
 	}
